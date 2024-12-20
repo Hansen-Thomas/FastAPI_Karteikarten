@@ -1,4 +1,7 @@
-/env
+env
 *.ini
-/pycache
-*.pyd
+__pycache__
+private
+.pytest_cache
+*.pyc
+var
