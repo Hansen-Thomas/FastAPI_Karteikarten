@@ -1,11 +1,18 @@
 import datetime
 
+from domain.card.word_type import WordType
+
+
 class Card(object):
     def __init__(self) -> None:
         self.id: int = 0
+        self.word_type: WordType = WordType.NONE
+        
         self.german: str = ""
         self.italian: str = ""
+        
         self.tags: list[str] = []
+        
         self.last_tested: datetime.datetime | None = None
         self.correct_answers: int = 0
         self.wrong_answers: int = 0
