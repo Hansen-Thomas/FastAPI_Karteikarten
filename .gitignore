@@ -1,7 +1,9 @@
 env
 *.ini
 __pycache__
+*.pyc
 private
 .pytest_cache
-*.pyc
+.VSCodeCounter
+.vscode
 var
