@@ -15,7 +15,19 @@ def test_fake_card_repo_can_save_and_return_cards(fake_session: Session):
     assert card_repo.all() == [card]
     assert card_repo.get(card.id) == card
 
-    card_repo.delete(card.id)
+    fake_session.commit()
+    assert fake_session.committed
+
+
+def test_fake_card_repo_can_delete_cards(fake_session: Session):
+    card_repo = FakeCardRepository(fake_session)
+
+    card = Card()
+    card.german = "die Antwort"
+    card.italian = "la risposta"
+
+    card_repo.add(card)
+    card_repo.delete(card)
     assert card_repo.all() == []
     assert card_repo.get(card.id) is None
 

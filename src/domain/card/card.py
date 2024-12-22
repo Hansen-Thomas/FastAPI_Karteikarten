@@ -21,6 +21,17 @@ class Card(object):
     def __repr__(self) -> str:
         return f"Card(id={self.id}, german={self.german}, italian={self.italian})"
     
+    def __eq__(self, other: object) -> bool:
+        if other is None:
+            return False
+        elif not isinstance(other, Card):
+            return False
+        else:
+            return self.id == other.id
+        
+    def __hash__(self) -> int:
+        return hash(self.id)
+
     def solve(self, solve_italian: bool, guess: str) -> bool:
         if solve_italian:
             solution = self.italian

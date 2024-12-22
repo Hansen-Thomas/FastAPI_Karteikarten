@@ -26,7 +26,6 @@ class FakeCardRepository(AbstractCardRepository):
         self.cards.add(card)
 
     @override
-    def delete(self, id: int) -> None:
-        card = self.get(id)
-        if card:
+    def delete(self, card: Card) -> None:
+        if card in self.cards:
             self.cards.remove(card)

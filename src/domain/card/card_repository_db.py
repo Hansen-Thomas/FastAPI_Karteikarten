@@ -1,3 +1,5 @@
+from typing import override
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -9,19 +11,24 @@ class DbCardRepository(AbstractCardRepository):
     def __init__(self, session: Session):
         self.session = session
 
+    @override
     def all(self) -> list[Card]:
         return self.session.query(Card).all()
 
+    @override
     def get(self, id: int) -> Card | None:
         stmt = select(Card).where(Card.id == id)
-        return self.session.execute(stmt).scalar()
+        return self.session.scalar(stmt)
 
+    @override
     def add(self, card: Card) -> None:
         self.session.add(card)
         self.session.commit()
 
-    def delete(self, id: int) -> None:
-        stmt = select(Card).where(Card.id == id)
-        card = self.session.execute(stmt).scalar()
-        self.session.delete(card)
-        self.session.commit()
+    @override
+    def delete(self, card: Card) -> None:
+        stmt = select(Card).where(Card.id == card.id)
+        card = self.session.scalar(stmt)
+        if card:
+            self.session.delete(card)
+            self.session.commit()
