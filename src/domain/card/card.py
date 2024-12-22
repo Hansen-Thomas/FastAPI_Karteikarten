@@ -23,9 +23,10 @@ class Card(object):
     
     def solve(self, solve_italian: bool, guess: str) -> bool:
         if solve_italian:
-            correct = True if guess == self.italian else False
+            solution = self.italian
         else:
-            correct = True if guess == self.german else False
+            solution = self.german
+        correct = True if guess == solution else False
         self.update_statistics(correct)
         return correct
 
@@ -35,6 +36,10 @@ class Card(object):
             self.correct_answers += 1
         self.last_answer_correct = correct
         self.last_played = datetime.datetime.now()
+
+    @property
+    def wrong_answers(self) -> int:
+        return self.times_played - self.correct_answers
 
     def add_tag(self, tag: str) -> None:
         if tag not in self.tags:

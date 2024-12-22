@@ -13,7 +13,7 @@ class Cardset:
         return f"Cardset(name={self.name}, cards={self.cards})"
     
     def add_card(self, card: Card) -> None:
-        if not card in self.cards:
+        if card not in self.cards:
             self.cards.append(card)
             
     def remove_card(self, card: Card) -> None:
