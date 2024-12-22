@@ -4,10 +4,12 @@ from domain.card.card import Card
 
 def test_cardset():
     card1 = Card()
+    card1.id = 1
     card1.german = "die Antwort"
     card1.italian = "la risposta"
     
     card2 = Card()
+    card2.id = 2
     card2.german = "die Frage"
     card2.italian = "la domanda"
     
