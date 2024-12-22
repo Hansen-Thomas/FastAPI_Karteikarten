@@ -1,15 +1,15 @@
 from domain.card.card import Card
 
 
-def test_card():
+def test_create_simple_card():
     card = Card()
     card.german = "die Antwort"
     card.italian = "la risposta"
-    assert card.solve_italian("la risposta")
-    assert not card.solve_italian("la domanda")
+    assert card.solve(solve_italian=True, guess="la risposta")
+    assert not card.solve(solve_italian=True, guess="la domanda")
 
 
-def test_card_tags():
+def test_create_card_with_tags():
     card = Card()
     card.add_tag("tag1")
     card.add_tag("tag2")
@@ -21,4 +21,3 @@ def test_card_tags():
     assert card.has_tag("tag2")
     card.remove_tag("tag2")
     assert not card.has_tag("tag2")
-    
