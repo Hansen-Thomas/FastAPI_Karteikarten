@@ -9,22 +9,6 @@ def test_create_simple_card():
     assert card.solve(solve_italian=True, guess="la domanda") is False
 
 
-def test_create_card_with_tags():
-    card = Card()
-    card.add_tag("tag1")
-    card.add_tag("tag2")
-    assert card.has_tag("tag1")
-    assert card.has_tag("tag2")
-    assert not card.has_tag("tag3")
-
-    card.remove_tag("tag1")
-    assert not card.has_tag("tag1")
-    assert card.has_tag("tag2")
-
-    card.remove_tag("tag2")
-    assert not card.has_tag("tag2")
-
-
 def test_statistics_after_solving():
     card = Card()
     card.german = "die Antwort"
@@ -54,3 +38,19 @@ def test_statistics_after_solving():
     assert card.wrong_answers == 1
     assert card.last_answer_correct is True
     assert card.last_played is not None
+
+
+def test_create_card_with_tags():
+    card = Card()
+    card.add_tag("tag1")
+    card.add_tag("tag2")
+    assert card.has_tag("tag1")
+    assert card.has_tag("tag2")
+    assert not card.has_tag("tag3")
+
+    card.remove_tag("tag1")
+    assert not card.has_tag("tag1")
+    assert card.has_tag("tag2")
+
+    card.remove_tag("tag2")
+    assert not card.has_tag("tag2")
