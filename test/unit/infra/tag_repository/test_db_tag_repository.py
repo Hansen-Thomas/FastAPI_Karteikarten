@@ -7,8 +7,7 @@ from domain.tag.tag_repository_db import DbTagRepository
 def test_tag_repository_can_add_tag(session_for_empty_unit_test_db: Session):
     # Arrange:
     tag_repo = DbTagRepository(session_for_empty_unit_test_db)
-    tag = Tag()
-    tag.value = "test tag"
+    tag = Tag("test tag")
 
     # Act:
     tag_repo.add(tag)

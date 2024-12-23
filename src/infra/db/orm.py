@@ -4,6 +4,7 @@ from domain.card.card import Card
 from domain.tag.tag import Tag
 from infra.db.tables.card_table import card_table
 from infra.db.tables.tag_table import tag_table
+from infra.db.tables.card_has_tag_table import card_has_tag_table
 
 
 def start_mappers():
@@ -11,7 +12,14 @@ def start_mappers():
     mapping_registry.map_imperatively(
         Card,
         card_table,
-        properties={},
+        properties={
+            "tags": relationship(
+                Tag,
+                secondary=card_has_tag_table,
+                lazy="immediate",
+                collection_class=set,
+            )
+        },
     )
     mapping_registry.map_imperatively(
         Tag,

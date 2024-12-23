@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from domain.card.card import Card
 from domain.card.card_repository_db import DbCardRepository
 from domain.card.word_type import WordType
+from domain.tag.tag import Tag
+from domain.tag.tag_repository_db import DbTagRepository
 
 
 def test_db_card_repo_can_add_card(
@@ -23,6 +25,35 @@ def test_db_card_repo_can_add_card(
     # Assert:
     assert card_repo.all() == [card]
     assert card_repo.get_by_german(card.german) == card
+
+
+def test_db_card_repo_can_add_card_with_tags(
+    session_for_empty_unit_test_db: Session,
+):
+    # Arrange:
+    card_repo = DbCardRepository(session_for_empty_unit_test_db)
+    card = Card()
+    card.id = 1
+    card.word_type = WordType.NOUN
+    card.german = "die Katze"
+    card.italian = "il gatto"
+
+    card.add_tag("Tiere")
+    card.add_tag("Natur")
+
+    # Act:
+    card_repo.add(card)
+    session_for_empty_unit_test_db.commit()
+
+    # Assert:
+    tag_repo = DbTagRepository(session_for_empty_unit_test_db)
+    tags = tag_repo.all()
+    assert len(tags) == 2
+    cards = card_repo.all()
+    assert len(cards) == 1
+    assert cards[0] == card
+    assert tags[0] in cards[0].tags
+
 
 
 def test_db_card_repo_can_get_all_cards(session_for_filled_unit_test_db: Session):
