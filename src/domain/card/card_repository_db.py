@@ -17,8 +17,13 @@ class DbCardRepository(AbstractCardRepository):
         return self.session.scalars(stmt).all()
 
     @override
-    def get(self, id: int) -> Card | None:
-        stmt = select(Card).where(Card.id == id)
+    def get_by_german(self, german: str) -> Card | None:
+        stmt = select(Card).where(Card.german == german)
+        return self.session.scalar(stmt)
+
+    @override
+    def get_by_italian(self, italian: str) -> Card | None:
+        stmt = select(Card).where(Card.italian == italian)
         return self.session.scalar(stmt)
 
     @override

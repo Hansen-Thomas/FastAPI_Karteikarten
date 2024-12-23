@@ -106,8 +106,10 @@ URL_OBJECT_UNIT_TESTS = URL.create(drivername="sqlite", database="pytest.db")
 
 # pick the URL-object used for this application-run based on the config-file:
 if definitions.CFG_DB_USE == "Production":
+    raise NotImplementedError("Production-DB not implemented yet.")
     _url_object = URL_OBJECT_PROD
 elif definitions.CFG_DB_USE == "Stage":
+    raise NotImplementedError("Stage-DB not implemented yet.")
     _url_object = URL_OBJECT_STAGE
 elif definitions.CFG_DB_USE == "UnitTests":
     _url_object = URL_OBJECT_UNIT_TESTS

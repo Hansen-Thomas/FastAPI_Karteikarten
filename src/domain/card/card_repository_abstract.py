@@ -9,7 +9,11 @@ class AbstractCardRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get(self, id: int) -> Card:
+    def get_by_german(self, german: str) -> Card:
+        raise NotImplementedError
+    
+    @abstractmethod
+    def get_by_italian(self, italian: str) -> Card:
         raise NotImplementedError
 
     @abstractmethod

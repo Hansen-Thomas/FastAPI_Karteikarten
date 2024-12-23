@@ -7,3 +7,5 @@ private
 .VSCodeCounter
 .vscode
 var
+*.db
+.coverage

@@ -13,11 +13,18 @@ class FakeCardRepository(AbstractCardRepository):
     @override
     def all(self) -> list[Card]:
         return list(self.cards)
-    
+
     @override
-    def get(self, id: int) -> Card | None:
+    def get_by_german(self, german: str) -> Card | None:
         for card in self.cards:
-            if card.id == id:
+            if card.german == german:
+                return card
+        return None
+
+    @override
+    def get_by_italian(self, italian: str) -> Card | None:
+        for card in self.cards:
+            if card.italian == italian:
                 return card
         return None
 
