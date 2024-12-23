@@ -11,7 +11,7 @@ class Card(object):
         self.german: str = ""
         self.italian: str = ""
 
-        self.tags: list[str] = []
+        self.tags: list[str] = []  # TODO: Refactor to class "Tag"
 
         self.times_played: int = 0
         self.correct_answers: int = 0

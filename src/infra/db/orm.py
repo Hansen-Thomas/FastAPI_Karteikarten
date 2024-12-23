@@ -1,7 +1,9 @@
 from sqlalchemy.orm import registry, relationship
 
 from domain.card.card import Card
+from domain.tag.tag import Tag
 from infra.db.tables.card_table import card_table
+from infra.db.tables.tag_table import tag_table
 
 
 def start_mappers():
@@ -11,6 +13,12 @@ def start_mappers():
         card_table,
         properties={},
     )
+    mapping_registry.map_imperatively(
+        Tag,
+        tag_table,
+        properties={},
+    )
+
     # mapping_registry.map_imperatively(
     #     User,
     #     user_table,

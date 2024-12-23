@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from domain.card.card import Card
 from domain.card.card_repository_db import DbCardRepository
+from domain.card.word_type import WordType
 
 
 def test_db_card_repo_can_save_and_return_cards(
@@ -11,6 +12,7 @@ def test_db_card_repo_can_save_and_return_cards(
     card_repo = DbCardRepository(session_for_empty_unit_test_db)
     card = Card()
     card.id = 1
+    card.word_type = WordType.NOUN
     card.german = "die Antwort"
     card.italian = "la risposta"
 
@@ -21,6 +23,40 @@ def test_db_card_repo_can_save_and_return_cards(
     # Assert:
     assert card_repo.all() == [card]
     assert card_repo.get_by_german(card.german) == card
+
+
+def test_db_card_repo_can_get_all_cards(session_for_filled_unit_test_db: Session):
+    # Arrange:
+    card_repo = DbCardRepository(session_for_filled_unit_test_db)
+
+    # Act:
+    cards = card_repo.all()
+
+    # Assert:
+    assert len(cards) == 5
+
+
+def test_db_card_repo_can_update_existing_cards(
+    session_for_filled_unit_test_db: Session,
+):
+    # Arrange:
+    card_repo = DbCardRepository(session_for_filled_unit_test_db)
+    cards = card_repo.all()
+    first_card = cards[0]
+    old_german_value = first_card.german
+    old_italian_value = first_card.italian
+    new_german_value = old_german_value + " (updated)"
+    new_italian_value = old_italian_value + " (updated)"
+
+    # Act:
+    first_card.german = new_german_value
+    first_card.italian = new_italian_value
+    session_for_filled_unit_test_db.commit()
+
+    # Assert:
+    first_card_after_commit = card_repo.get_by_german(new_german_value)
+    assert first_card_after_commit.german == new_german_value
+    assert first_card_after_commit.italian == new_italian_value
 
 
 def test_db_card_repo_can_delete_existing_cards(
@@ -55,19 +91,17 @@ def test_db_card_repo_cannot_delete_not_existing_cards(
 
     # Act (delete existing card):
     card_repo.delete(second_card)
+    session_for_filled_unit_test_db.commit()
     assert len(card_repo.all()) == 4
     assert second_card not in card_repo.all()
 
     # Act (delete not existing card):
     card_repo.delete(second_card)
+    session_for_filled_unit_test_db.commit()
     assert len(card_repo.all()) == 4
     assert second_card not in card_repo.all()
 
     # Act (delete existing card):
     card_repo.delete(third_card)
-    assert len(card_repo.all()) == 3
-
-    # Act:
     session_for_filled_unit_test_db.commit()
-    cards_after_commit = card_repo.all()
-    assert len(cards_after_commit) == 3
+    assert len(card_repo.all()) == 3
