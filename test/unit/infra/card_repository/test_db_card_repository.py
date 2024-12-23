@@ -5,7 +5,7 @@ from domain.card.card_repository_db import DbCardRepository
 from domain.card.word_type import WordType
 
 
-def test_db_card_repo_can_save_and_return_cards(
+def test_db_card_repo_can_add_card(
     session_for_empty_unit_test_db: Session,
 ):
     # Arrange:
@@ -36,7 +36,7 @@ def test_db_card_repo_can_get_all_cards(session_for_filled_unit_test_db: Session
     assert len(cards) == 5
 
 
-def test_db_card_repo_can_update_existing_cards(
+def test_db_card_repo_can_update_card(
     session_for_filled_unit_test_db: Session,
 ):
     # Arrange:
@@ -59,7 +59,7 @@ def test_db_card_repo_can_update_existing_cards(
     assert first_card_after_commit.italian == new_italian_value
 
 
-def test_db_card_repo_can_delete_existing_cards(
+def test_db_card_repo_can_delete_existing_card(
     session_for_filled_unit_test_db: Session,
 ):
     # Arrange:
@@ -79,7 +79,7 @@ def test_db_card_repo_can_delete_existing_cards(
     assert third_card in card_repo.all()
 
 
-def test_db_card_repo_cannot_delete_not_existing_cards(
+def test_db_card_repo_cannot_delete_not_existing_card(
     session_for_filled_unit_test_db: Session,
 ):
     # Arrange:

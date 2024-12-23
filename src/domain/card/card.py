@@ -12,7 +12,7 @@ class Card(object):
         self.german: str = ""
         self.italian: str = ""
 
-        self.tags: list[Tag] = []
+        self.tags: set[Tag] = set()
 
         self.times_played: int = 0
         self.correct_answers: int = 0
@@ -55,8 +55,7 @@ class Card(object):
 
     def add_tag(self, value: str) -> None:
         tag = Tag(value)
-        if tag not in self.tags:
-            self.tags.append(tag)
+        self.tags.add(tag)
 
     def remove_tag(self, value: str) -> None:
         tag = Tag(value)

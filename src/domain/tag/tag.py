@@ -2,6 +2,9 @@ class Tag:
     def __init__(self, value: str = ""):
         self.value = value
 
+    def __hash__(self) -> int:
+        return hash(self.value)
+
     def __eq__(self, other: object) -> bool:
         if other is None:
             return False

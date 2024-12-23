@@ -4,7 +4,7 @@ from domain.card.card import Card
 from test.utils.fake_card_repo import FakeCardRepository
 
 
-def test_fake_card_repo_can_save_and_return_cards(fake_session: Session):
+def test_fake_card_repo_can_add_card(fake_session: Session):
     # Arrange:
     card_repo = FakeCardRepository(fake_session)
     card = Card()
@@ -21,7 +21,7 @@ def test_fake_card_repo_can_save_and_return_cards(fake_session: Session):
     assert card_repo.get_by_german(card.german) == card
 
 
-def test_fake_card_repo_can_delete_existing_cards(fake_session: Session):
+def test_fake_card_repo_can_delete_existing_card(fake_session: Session):
     # Arrange:
     card_repo = FakeCardRepository(fake_session)
     card = Card()
