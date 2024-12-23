@@ -13,7 +13,8 @@ class DbCardRepository(AbstractCardRepository):
 
     @override
     def all(self) -> list[Card]:
-        return self.session.query(Card).all()
+        stmt = select(Card)
+        return self.session.scalars(stmt).all()
 
     @override
     def get(self, id: int) -> Card | None:

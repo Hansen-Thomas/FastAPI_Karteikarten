@@ -16,11 +16,11 @@ try:
     CONFIG.read(PATH_CONFIG_FILE)
 
     # read database-configuration:
-    CFG_DB_USE = CONFIG.get("database", "use_db")
-    CFG_DB_HOST_PRODUCTION = CONFIG.get("database", "host_production_db")
-    CFG_DB_NAME_PRODUCTION = CONFIG.get("database", "name_production_db")
-    CFG_DB_HOST_STAGE = CONFIG.get("database", "host_stage_db")
-    CFG_DB_NAME_STAGE = CONFIG.get("database", "name_stage_db")
+    CFG_DB_USE = CONFIG.get("DB", "USE")
+    CFG_DB_HOST_PRODUCTION = CONFIG.get("DB", "HOST_PRODUCTION")
+    CFG_DB_NAME_PRODUCTION = CONFIG.get("DB", "NAME_PRODUCTION")
+    CFG_DB_HOST_STAGE = CONFIG.get("DB", "HOST_STAGE")
+    CFG_DB_NAME_STAGE = CONFIG.get("DB", "NAME_STAGE")
 
 except Exception as e:
     print(f"Error reading config-file: {e}")

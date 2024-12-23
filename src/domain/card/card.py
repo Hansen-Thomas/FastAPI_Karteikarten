@@ -5,7 +5,7 @@ from domain.card.word_type import WordType
 
 class Card(object):
     def __init__(self) -> None:
-        self.id: int = 0
+        self.id: int = None
         self.word_type: WordType = WordType.NONE
 
         self.german: str = ""
@@ -27,7 +27,7 @@ class Card(object):
         elif not isinstance(other, Card):
             return False
         else:
-            return self.id == other.id
+            return self.german == other.german and self.italian == other.italian
         
     def __hash__(self) -> int:
         return hash(self.id)
