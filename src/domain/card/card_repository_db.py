@@ -23,7 +23,6 @@ class DbCardRepository(AbstractCardRepository):
     @override
     def add(self, card: Card) -> None:
         self.session.add(card)
-        self.session.commit()
 
     @override
     def delete(self, card: Card) -> None:
@@ -31,4 +30,3 @@ class DbCardRepository(AbstractCardRepository):
         card = self.session.scalar(stmt)
         if card:
             self.session.delete(card)
-            self.session.commit()

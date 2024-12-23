@@ -57,7 +57,8 @@ Example usage for a session (with ORM): ---------------------------------------
     orm.start_mappers()
 
     with db.get_session() as session:
-        user = session.execute(select(User).where(User.id == 1)).fetchone()
+        stmt = select(User).where(User.id == 1)
+        user = session.execute(stmt).fetchone()
         print(user)
 
 """
@@ -78,28 +79,47 @@ import infra.db.tables  # by that the metadata is initialized
 logger = logging.getLogger(__name__)
 logger.debug("configure db-connection based on config-file")
 
-# URL for the local SQLite-database (only used for testing):
-URL_OBJECT_LOCAL = URL.create(drivername="sqlite", database="test.db")
+# Create connection-URLs:
+
+# example for a MS-SQL-Server-URL:
+_driver_name = "mssql+pyodbc"  # change that depending on your DBMS
+_query = {"driver": "ODBC Driver 17 for SQL Server"}
+
+# URL for the production-database:
+URL_OBJECT_PROD = URL.create(
+    drivername=_driver_name,
+    host=definitions.CFG_DB_HOST_PRODUCTION,
+    database=definitions.CFG_DB_NAME_PRODUCTION,
+    query=_query,
+)
+
+# URL for the stage-database (only used for testing):
+URL_OBJECT_STAGE = URL.create(
+    drivername=_driver_name,
+    host=definitions.CFG_DB_HOST_STAGE,
+    database=definitions.CFG_DB_NAME_STAGE,
+    query=_query,
+)
+
+# URL for the local SQLite-database (only used for unit testing):
+URL_OBJECT_UNIT_TESTS = URL.create(drivername="sqlite", database="pytest.db")
 
 # pick the URL-object used for this application-run based on the config-file:
-if definitions.CFG_USE_DB == "Production":
-    _url_object = None  # TODO: TBD
-    _db_name = definitions.CFG_PRODUCTION_DB
-elif definitions.CFG_USE_DB == "Test":
-    _url_object = None  # TODO: TBD
-    _db_name = definitions.CFG_TEST_DB
-elif definitions.CFG_USE_DB == "Local":
-    _url_object = URL_OBJECT_LOCAL
-    _db_name = "Local"
+if definitions.CFG_DB_USE == "Production":
+    _url_object = URL_OBJECT_PROD
+elif definitions.CFG_DB_USE == "Stage":
+    _url_object = URL_OBJECT_STAGE
+elif definitions.CFG_DB_USE == "UnitTests":
+    _url_object = URL_OBJECT_UNIT_TESTS
 else:
     logger.error(
-        "USE_DB must be either 'Production' or 'Test', "
-        f"but current value is '{definitions.CFG_USE_DB}'."
+        "USE_DB must be either 'Production' or 'Stage', "
+        f"but current value is '{definitions.CFG_DB_USE}'."
     )
     logger.error("--- CLOSE APP, BAD DB-CONFIGURATION------------------------")
     sys.exit(1)
 
-logger.info(f"using database: {_db_name}")
+logger.info(f"using database: {definitions.CFG_DB_USE}")
 
 
 # 3) setup engine and sessionmaker: -------------------------------------------
