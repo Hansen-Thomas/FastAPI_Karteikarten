@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from sqlalchemy import Connection, MetaData, URL, create_engine
+from sqlalchemy import Connection, Engine, MetaData, URL, create_engine
 from sqlalchemy.orm import sessionmaker
 
 import config.definitions as definitions
@@ -94,12 +94,7 @@ URL_OBJECT_PROD = URL.create(
 )
 
 # URL for the stage-database (only used for testing):
-URL_OBJECT_STAGE = URL.create(
-    drivername=_driver_name,
-    host=definitions.CFG_DB_HOST_STAGE,
-    database=definitions.CFG_DB_NAME_STAGE,
-    query=_query,
-)
+URL_OBJECT_STAGE = URL.create(drivername="sqlite", database="stage.db")
 
 # URL for the local SQLite-database (only used for unit testing):
 URL_OBJECT_UNIT_TESTS = URL.create(drivername="sqlite", database="pytest.db")
@@ -109,7 +104,6 @@ if definitions.CFG_DB_USE == "Production":
     raise NotImplementedError("Production-DB not implemented yet.")
     _url_object = URL_OBJECT_PROD
 elif definitions.CFG_DB_USE == "Stage":
-    raise NotImplementedError("Stage-DB not implemented yet.")
     _url_object = URL_OBJECT_STAGE
 elif definitions.CFG_DB_USE == "UnitTests":
     _url_object = URL_OBJECT_UNIT_TESTS
@@ -137,6 +131,7 @@ _SessionFactory = sessionmaker(bind=_engine)
 def get_connection() -> Connection:
     return _engine.connect()
 
+
 def get_session():
     try:
         session = _SessionFactory()
@@ -144,3 +139,24 @@ def get_session():
     finally:
         session.close()
         print(f"Status connection-pool: {_engine.pool.status()}")
+
+
+# 5) Provide other utility functions: -----------------------------------------
+#
+#    These functions should not be used by the application, but only by
+#    scripts or tests. They offer a way to retrieve an engine and to setup
+#    the schema.
+
+
+def _get_engine(db: str, echo: bool = False) -> Engine:
+    if db == "Production":
+        _url = URL_OBJECT_PROD
+    else:
+        _url = URL_OBJECT_STAGE
+
+    engine = create_engine(_url, echo=echo)
+    return engine
+
+
+def _setup_schema(engine: Engine) -> None:
+    metadata.create_all(engine)
