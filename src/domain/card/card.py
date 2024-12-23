@@ -1,6 +1,7 @@
 import datetime
 
 from domain.card.word_type import WordType
+from domain.tag.tag import Tag
 
 
 class Card(object):
@@ -11,7 +12,7 @@ class Card(object):
         self.german: str = ""
         self.italian: str = ""
 
-        self.tags: list[str] = []  # TODO: Refactor to class "Tag"
+        self.tags: list[Tag] = []
 
         self.times_played: int = 0
         self.correct_answers: int = 0
@@ -52,13 +53,16 @@ class Card(object):
     def wrong_answers(self) -> int:
         return self.times_played - self.correct_answers
 
-    def add_tag(self, tag: str) -> None:
+    def add_tag(self, value: str) -> None:
+        tag = Tag(value)
         if tag not in self.tags:
             self.tags.append(tag)
 
-    def remove_tag(self, tag: str) -> None:
+    def remove_tag(self, value: str) -> None:
+        tag = Tag(value)
         if tag in self.tags:
             self.tags.remove(tag)
 
-    def has_tag(self, tag: str) -> bool:
+    def has_tag(self, value: str) -> bool:
+        tag = Tag(value)
         return tag in self.tags

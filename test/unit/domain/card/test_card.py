@@ -1,4 +1,5 @@
 from domain.card.card import Card
+import test.utils.test_tags as test_tags
 
 
 def test_create_simple_card():
@@ -41,16 +42,20 @@ def test_statistics_after_solving():
 
 
 def test_create_card_with_tags():
+
+    tag1 = test_tags.get_tag1()
+    tag2 = test_tags.get_tag2()
+
     card = Card()
-    card.add_tag("tag1")
-    card.add_tag("tag2")
-    assert card.has_tag("tag1")
-    assert card.has_tag("tag2")
+    card.add_tag(tag1.value)
+    card.add_tag(tag2.value)
+    assert card.has_tag(tag1.value)
+    assert card.has_tag(tag2.value)
     assert not card.has_tag("tag3")
 
-    card.remove_tag("tag1")
-    assert not card.has_tag("tag1")
-    assert card.has_tag("tag2")
+    card.remove_tag(tag1.value)
+    assert not card.has_tag(tag1.value)
+    assert card.has_tag(tag2.value)
 
-    card.remove_tag("tag2")
-    assert not card.has_tag("tag2")
+    card.remove_tag(tag2.value)
+    assert not card.has_tag(tag2.value)
