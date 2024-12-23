@@ -38,10 +38,14 @@ def test_db_card_repo_can_add_card_with_tags(
     card.german = "die Katze"
     card.italian = "il gatto"
 
+    # Act: Add tags:
     card.add_tag("Tiere")
     card.add_tag("Natur")
+    assert len(card.tags) == 2
+    assert card.has_tag("Tiere")
+    assert card.has_tag("Natur")
 
-    # Act:
+    # Act: Save to DB:
     card_repo.add(card)
     session_for_empty_unit_test_db.commit()
 
@@ -51,9 +55,20 @@ def test_db_card_repo_can_add_card_with_tags(
     assert len(tags) == 2
     cards = card_repo.all()
     assert len(cards) == 1
-    assert cards[0] == card
-    assert tags[0] in cards[0].tags
+    first_card = cards[0]
+    assert first_card == card
+    assert tags[0] in first_card.tags
 
+    # Act: Remove one of both tags:
+    card.remove_tag("Natur")
+    session_for_empty_unit_test_db.commit()
+
+    # Assert:
+    cards = card_repo.all()
+    assert len(cards) == 1
+    first_card = cards[0]
+    assert first_card.has_tag("Tiere")
+    assert first_card.has_tag("Natur") is False
 
 
 def test_db_card_repo_can_get_all_cards(session_for_filled_unit_test_db: Session):
