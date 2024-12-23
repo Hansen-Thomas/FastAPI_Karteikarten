@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from domain.card.card import Card
 from domain.card.card_repository_db import DbCardRepository
 from domain.card.word_type import WordType
-from domain.tag.tag import Tag
 from domain.tag.tag_repository_db import DbTagRepository
 
 
