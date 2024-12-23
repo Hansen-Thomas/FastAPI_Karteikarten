@@ -98,6 +98,7 @@ URL_OBJECT_STAGE = URL.create(drivername="sqlite", database="stage.db")
 
 # URL for the local SQLite-database (only used for unit testing):
 URL_OBJECT_UNIT_TESTS = URL.create(drivername="sqlite", database="pytest.db")
+# URL_OBJECT_UNIT_TESTS = URL.create(drivername="sqlite", database=":memory:")
 
 # pick the URL-object used for this application-run based on the config-file:
 if definitions.CFG_DB_USE == "Production":

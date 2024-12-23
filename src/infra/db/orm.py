@@ -18,6 +18,7 @@ def start_mappers():
                 secondary=card_has_tag_table,
                 lazy="immediate",
                 collection_class=set,
+                cascade="all"
             )
         },
     )
