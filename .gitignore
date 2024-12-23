@@ -7,5 +7,5 @@ private
 .VSCodeCounter
 .vscode
 var
-*.db
+pytest.db
 .coverage
