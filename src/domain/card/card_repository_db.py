@@ -12,11 +12,6 @@ class DbCardRepository(AbstractCardRepository):
         self.session = session
 
     @override
-    def all(self) -> list[Card]:
-        stmt = select(Card)
-        return self.session.scalars(stmt).all()
-
-    @override
     def get_by_german(self, german: str) -> Card | None:
         stmt = select(Card).where(Card.german == german)
         return self.session.scalar(stmt)
@@ -26,6 +21,11 @@ class DbCardRepository(AbstractCardRepository):
         stmt = select(Card).where(Card.italian == italian)
         return self.session.scalar(stmt)
 
+    @override
+    def all(self) -> list[Card]:
+        stmt = select(Card)
+        return self.session.scalars(stmt).all()
+    
     @override
     def add(self, card: Card) -> None:
         self.session.add(card)

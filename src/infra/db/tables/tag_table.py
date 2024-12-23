@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, Integer, String
+from sqlalchemy import Table, Column, String
 
 from infra.db import metadata
 
@@ -6,6 +6,5 @@ from infra.db import metadata
 tag_table = Table(
     "Tag",
     metadata,
-    Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("value", String),
+    Column("value", String, primary_key=True),
 )

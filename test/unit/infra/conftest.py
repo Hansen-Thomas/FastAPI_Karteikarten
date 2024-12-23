@@ -3,11 +3,11 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, clear_mappers
 
-from domain.card.card import Card
 from domain.card.card_repository_db import DbCardRepository
 import infra.db as db
 import infra.db.orm as orm
 from test.utils.test_cards import get_test_cards
+from test.utils.test_tags import get_test_tags
 
 
 @pytest.fixture
@@ -49,6 +49,9 @@ def session_for_filled_unit_test_db(
         session_to_fill = sessionmaker(bind=engine_for_resetted_unit_test_db)()
 
         repo = DbCardRepository(session_to_fill)
+        test_tags = get_test_tags()
+        for tag in test_tags:
+            session_to_fill.add(tag)
         test_cards = get_test_cards()
         for card in test_cards:
             repo.add(card)
